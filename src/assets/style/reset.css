@@ -1,0 +1,82 @@
+/********** 1. IMPORT FILES **********/
+/*************************************/
+
+
+/********** 2. RESET STYLES **********/
+/*************************************/
+
+/* 清除内外边距 */
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+section, figure, figcaption, header, footer, form,
+dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+pre, /* text formatting elements 文本格式元素 */
+fieldset, lengend, button, input, textarea, /* form elements 表单元素 */
+th, td { /* table elements 表格元素 */
+    margin: 0;
+    padding: 0;
+    font-size: .28rem
+}
+address,caption,cite,code,dfn,em,strong,th,var {
+  font-style:normal;
+  font-weight:normal
+}
+body {
+    font-family: '微软雅黑','LatoRegular', 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, sans-serif !important;
+    color: #292929;
+    background-color: #fff;
+}
+
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+input,select,textarea,button {
+    font-family: '微软雅黑','LatoRegular', 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, sans-serif !important;
+    color: #636e7b;
+}
+
+input, textarea:focus {
+    outline: none;
+}
+
+a {
+	text-decoration: none;
+    color: #333;
+}
+a:visited, a:active {
+    color: inherit;
+}
+a:focus, a:active { outline: none; }
+
+h1,h2,h3,h4,h5 {
+    font-family: '微软雅黑','LatoRegular', 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, sans-serif;
+}
+
+strong {
+    font-family: '微软雅黑','LatoBold';
+    font-weight: normal;
+}
+
+ul {
+	list-style: none;
+}
+img {
+  border: none;
+}
+html {
+  font-size: 100px;
+}
+@media screen and (max-width: 800px) {
+    html {
+        font-size: 50px
+    }
+}
+.clear {
+  clear: both;
+}
