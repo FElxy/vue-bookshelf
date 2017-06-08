@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<header-title></header-title>
+		<header-title heading="新建卡片"></header-title>
 		<div class="editor">
 			<textarea rows="10" placeholder="这里将记录你看书的想法"></textarea>
 			<div class="upload">

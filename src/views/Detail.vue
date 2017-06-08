@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<header-title></header-title>
+		<header-title heading="书籍详情"></header-title>
 		<div class="detail">
-			<article class="book">
-				<figure class="bookface"><img :src="bookface" alt=""></figure>
+			<article class="book" v-model="bookDetail">
+				<figure class="bookface"><img :src="bookDetail.image" alt=""></figure>
 				<section class="bookinfo">
-					<h3 class="title">JavaScript权威指南</h3>
-					<h5 class="author">David</h5>
-					<p class="intro">JavaScript权威指南JavaScript权威指南JavaScript权威指南JavaScript权威指南JavaScript权威指南JavaScript权威指南JavaScript权威指南JavaScript权威指南</p>
+					<h3 class="title">{{bookDetail.title}}</h3>
+					<h5 class="author">{{bookDetail.author}}</h5>
+					<p class="intro">{{bookDetail.summary}}</p>
 					<p class="score"><span>8.7</span>分</p>
 				</section>
 			</article>
@@ -20,18 +20,65 @@
 			<div class="tab-cnt">content</div>
 		</div>
 		<div class="nav-btm">
-			<a href="javascript:;">从书架中删除</a>
-			<a href="javascript:;">写读书卡片</a>
+			<a href="javascript:;" @click="editShelf">{{isOnShelf ? '从书架中删除' : '放入书架'}}</a>
+			<a href="javascript:;" @click="goComment">写读书卡片</a>
 		</div>
 	</div>
 </template>
 <script>
 	import logo from '@/assets/logo.png'
 	import HeaderTitle from '@/components/Header.vue'
+	import Route from '@/router/index'
+	import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 	export default {
 		data(){
 			return {
 				bookface: logo
+			}
+		},
+		mounted(){
+			this.parseRoute()
+		},
+		computed: {
+			...mapState({
+				bookDetail: state => state.bookDetail
+			}),
+			...mapGetters({
+				isOnShelf: 'isOnShelf'
+			})
+		},
+		methods: {
+			...mapMutations({
+				addBook: 'ADD_BOOK',
+				deleteBook: 'DELETE_BOOK'
+			}),
+			...mapActions({
+				fetchBookById: 'fetchBookById'
+			}),
+			parseRoute(){
+				let bookId = this.$route.params.id
+				if (!bookId) {
+					Route.push({name: 'shelf'})
+				}else if(typeof this.bookDetail.id == 'undefined'){
+					this.fetchBookById(bookId)
+				}
+
+			},
+			goComment(){
+				Route.push({name: 'comment'})
+			},
+			editShelf(){
+				
+				let isOnShelf = this.isOnShelf
+
+				if (isOnShelf) {
+
+					this.deleteBook(this.bookDetail)
+					Route.push({name: 'shelf'})
+					
+				}else{
+					this.addBook(this.bookDetail)
+				}
 			}
 		},
 		components: {
@@ -66,6 +113,11 @@
 			.title {
 				line-height: .66rem;
 				font-size: .38rem;
+				overflow : hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 1;
+				-webkit-box-orient: vertical;
 			}
 			.author {
 				line-height: .5rem;

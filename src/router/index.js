@@ -4,7 +4,7 @@ import Home from '@/views/Home'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -25,7 +25,7 @@ export default new Router({
       }]
     },{
     	name: 'detail',
-    	path: '/detail',
+    	path: '/detail/:id',
     	component: resolve => require(['@/views/Detail.vue'], resolve)
     },{
     	name: 'comment',
@@ -38,3 +38,17 @@ export default new Router({
     }
   ]
 })
+
+
+router.beforeEach((to, from, next) => {
+
+	if (to.path == '/') {
+		next({ path: '/shelf'})
+	} else {
+        next()
+    }	
+
+})
+
+
+export default router
