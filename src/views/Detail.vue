@@ -14,8 +14,8 @@
 		</div>
 		<div class="tabs">
 			<div class="tab-hd">
-				<a class="tab active" href="javascript:;">卡片</a>
-				<a class="tab" href="javascript:;">卡片</a>
+				<a class="tab" :class="{active: tabActive == 1}" href="javascript:;" @click="changeTab(1)">卡片</a>
+				<a class="tab" :class="{active: tabActive == 2}" href="javascript:;" @click="changeTab(2)">卡片</a>
 			</div>
 			<div class="tab-cnt">content</div>
 		</div>
@@ -33,7 +33,8 @@
 	export default {
 		data(){
 			return {
-				bookface: logo
+				bookface: logo,
+				tabActive: 1
 			}
 		},
 		mounted(){
@@ -64,6 +65,7 @@
 				}
 
 			},
+
 			goComment(){
 				Route.push({name: 'comment'})
 			},
@@ -79,6 +81,9 @@
 				}else{
 					this.addBook(this.bookDetail)
 				}
+			},
+			changeTab(index){
+				this.tabActive = index
 			}
 		},
 		components: {

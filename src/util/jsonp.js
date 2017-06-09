@@ -14,9 +14,11 @@ export const jsonp = (url, params, fn) => {
 
     function cleanup() {
 
+        if (typeof script == 'undefined') {return}
+
         if (timer) { clearTimeout(timer) }
         	
-        // if (script.parentNode) { script.parentNode.removeChild(script) }
+        if (script.parentNode) { script.parentNode.removeChild(script) }
 
         window[cbName] = function() {}
 

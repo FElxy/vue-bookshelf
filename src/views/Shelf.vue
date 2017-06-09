@@ -54,18 +54,23 @@
 <style lang="less">
 	@btn-black: #353535;
 	.header {
+		width: 100%;
 		height: 1.8rem;
 		line-height: 1rem;
 		background: #f8f8f8;
 		display: flex;
 		justify-content: space-between;
 		padding: .4rem;
+		position: fixed;
+		top: 0;
+		left: 0;
 		em {
 			font-size: .54rem;
 			margin-right: .1rem;
 		}
 	}
 	.content {
+		margin-top: 1.8rem;
 		margin-bottom: 1rem;
 		.book-list {
 			display: flex;
@@ -77,7 +82,7 @@
 				padding: .48rem;
 				.bookface {
 					width: 1.4rem;
-					height: 2rem;				
+					height: 1.8rem;				
 					overflow: hidden;
 					box-shadow: 0 0 5px 0 #000;
 				}

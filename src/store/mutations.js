@@ -8,7 +8,10 @@ export const state = {
 	searchList: [],
 	bookDetail: {},
 	currentPage: 0,
-	total: -1
+	total: -1,
+	pageSize: 20,
+	isMoreData: false,
+	isLoading: false
 
 }
 
@@ -27,24 +30,27 @@ export const mutations =  {
 	},
 
 	[types.SET_SEARCH_BOOK](state, obj){
-		
-		console.log(obj)
-		if(true){
-			if (obj.isReset) {
-				state.searchList = []
-			}
-			state.searchList = state.searchList.concat(obj.books)
-
-			state.total = obj.total
-
-			state.currentPage = obj.start			
+	
+		if (obj.isReset) {
+			state.searchList = []
+			state.currentPage = 0
+			state.isMoreData = false
 		}
+		state.searchList = state.searchList.concat(obj.books)
 
-		console.log(state.searchList)
+		state.total = obj.total
+
+		state.currentPage = obj.start			
+		
+
 	},
 
 	[types.SET_BOOK_DETAIL](state, obj){
 		state.bookDetail = obj
+	},
+
+	[types.SET_TARGET_VAL](state, {key, val}){
+		state[key] = val
 	}
 
 

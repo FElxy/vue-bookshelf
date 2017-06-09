@@ -2,7 +2,7 @@
 	<div>
 		<header-title heading="搜索"></header-title>
 		<div class="search-box">
-			<input type="text" placeholder="搜索书名或作者" v-model="formData.q" @keyup.enter="fetchSearchBook">
+			<input type="text" placeholder="搜索书名或作者" v-model="formData.q" @keyup.enter="fetchSearchBook(true)">
 		</div>
 		<div class="search-wrap">
 			<!-- <div>搜索你想要添加到书架里的书籍</div> -->
@@ -18,6 +18,8 @@
 					</div>
 				</li>
 			</ul>
+			<p v-show="isMoreData">没有更多了</p>
+			<p v-show="isLoading">加载中</p>
 		</div>
 	</div>
 </template>
@@ -25,24 +27,29 @@
 	import HeaderTitle from '@/components/Header.vue'
 	import { mapActions, mapState, mapMutations } from 'vuex'
 	import Route from '@/router/index'
+	import * as util from '@/util/util'
+
 	export default {
 		data(){
 			return {
 				formData: {
-					q: '',
-					start: 0,
-					count: 20
+					q: ''
 				}
 
 			}
 		},
 		mounted(){
+			window.addEventListener('scroll', util.throttle(this.pageScroll, 200))
 
 		},
 		computed: {
 			...mapState({
 				bookList: state => state.searchList,
-				books: state => state.books
+				books: state => state.books,
+				start: state => state.currentPage,
+				pageSize: state => state.pageSize,
+				isMoreData: state => state.isMoreData,
+				isLoading: state => state.isLoading
 			})
 			
 		},
@@ -59,9 +66,16 @@
 				return this.books.indexOf(book) !== -1
 				 
 			},
-			fetchSearchBook(){
-				console.log(22)
-				this.searchBook({form: this.formData, isReset: true})
+			fetchSearchBook(isReset){
+
+				if (isReset) {
+					this.formData.start = 0
+				}else{
+					this.formData.start = this.currentPage++
+				}
+				this.formData.count = this.pageSize
+
+				this.searchBook({form: this.formData, isReset: isReset})
 			},
 			goDetail(id, book){
 				if (id) {
@@ -75,6 +89,18 @@
 				}else{
 					this.addBook(book)
 				}
+			},
+			pageScroll(){
+				let body = document.querySelector('body')
+				let scrollTop = body.scrollTop,
+					clientHeight = document.documentElement.clientHeight,
+					scrollHeight = document.documentElement.scrollHeight
+
+				if (scrollHeight - clientHeight - scrollTop < 50) {
+					this.fetchSearchBook(false)
+				}
+
+
 			}
 		},
 		components: {
