@@ -41,4 +41,5 @@ npm run build --report
     - vue-awesome-swiper
     - less
 
+![](static/app.png)
 喜欢就star吧
