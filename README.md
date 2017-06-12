@@ -18,4 +18,27 @@ npm run build
 npm run build --report
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+一直想做个记录读过书的应用
+
+偶然发现微信小程序有个叫做“口袋书架”应用
+
+喜欢的不得了
+
+所以模仿着用vuejs做了一个
+
+也许有些地方看起来和原版不一致
+
+那是我累了
+
+临时先占着位
+
+后面慢慢迭代
+
+- 技术栈
+    - vuejs
+    - vue-router
+    - vuex
+    - vue-awesome-swiper
+    - less
+
+喜欢就star吧
