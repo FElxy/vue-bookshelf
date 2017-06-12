@@ -7,8 +7,45 @@
 		<section class="wrap-bd">
 			<swiper :options="swiperOption" ref="mySwiper" class="swipe-wrap">
 			    <!-- slides -->
-			    <swiper-slide class="swipe-item" v-for="item in swiperData" :key="item">
-			    	<card :tt="item.tt" :desc="item.desc">
+			    <swiper-slide class="swipe-item" v-for="(item, index) in swiperData" :key="item">
+			    	<card :tt="item.tt" :desc="item.desc" :ico="item.ico">
+			    		<template slot="cnt">
+			    			<ul class="pill list-wrap" v-if="index == 0">
+			    				<li>程序设计</li>
+			    			</ul>
+			    			<ul class="lst list-wrap" v-if="index == 1">
+			    				<li>
+			    					<span>2017</span>
+			    					<span></span>
+			    					<span>0本</span>
+			    				</li>
+			    			</ul>
+			    			<div v-if="index==4">
+			    				<dl class="lst list-wrap">
+			    					<dt>最爱出版社</dt>
+			    					<dd v-for="lst in publisher.pub">
+			    						<span>{{lst.left}}</span>
+			    						<span></span>
+			    						<span>{{lst.right}}本</span>
+			    					</dd>
+			    				</dl>
+			    				<dl class="lst list-wrap">
+			    					<dt>最爱作者</dt>
+			    					<dd v-for="lst in publisher.author">
+			    						<span>{{lst.left}}</span>
+			    						<span></span>
+			    						<span>{{lst.right}}本</span>
+			    					</dd>
+			    				</dl>
+			    			</div>
+			    			<ul class="lst list-wrap" v-else>
+			    				<li v-for="lst in getCardCnt(index)">
+			    					<span>{{lst.left}}</span>
+			    					<span></span>
+			    					<span>{{lst.right}}</span>
+			    				</li>
+			    			</ul>
+			    		</template>
 			    		<template slot="refer" v-if="item.refer">
 							{{item.refer}}
 			    		</template>
@@ -30,9 +67,6 @@
 				bgColor: '#deeff8',
 				colors: ['#deeff8','#def0ea','#ecebeb','#edeaf6','#faeceb','#faf4e4','#fb5a3d','#fb8e3d'],
 				dots:['#ff7000','#ffa633','#ffc466','#ffd899'],
-				posi:{
-					left:0
-				},
 				swiperOption: {
 		          autoplay: 0,
 		          direction : 'horizontal',
@@ -47,31 +81,37 @@
 		        },
 		        swiperData: [
 		        	{
+		        		ico: '&#xe653;',
 		        		tt: '阅读基因',
 		        		desc: 'You Are What You Read',
 		        		refer: '',
 		        		bd: []
 		        	},{
+		        		ico: '&#xe653;',
 		        		tt: '新鲜指数',
 		        		desc: '读的是小鲜肉还是老八股',
 		        		refer: '——根据出版年份统计——',
 		        		bd: []
 		        	},{
+		        		ico: '&#xe653;',
 		        		tt: '阅读品味',
 		        		desc: '阅读品味比得上颜值吗？',
 		        		refer: '——参考豆瓣评分统计——',
 		        		bd: []
 		        	},{
+		        		ico: '&#xe653;',
 		        		tt: '啃书字数',
 		        		desc: '吃的米多还是啃得字多',
 		        		refer: '——根据页数统计——',
 		        		bd: []
 		        	},{
+		        		ico: '&#xe653;',
 		        		tt: '专一程度',
 		        		desc: '你最钟情的作者和出版社',
 		        		refer: '',
 		        		bd: []
 		        	},{
+		        		ico: '&#xe653;',
 		        		tt: '土豪指数',
 		        		desc: '藏书总价能卖几平米房子',
 		        		refer: '——根据定价统计——',
@@ -84,6 +124,11 @@
 		        },
 		        category:{
 
+		        },
+		        sections: {
+		        	price: [20, 35, 40],
+		        	pages: [100, 200, 300, 400],
+		        	rating: [5.5, 7.0, 8.5]
 		        }
 			}
 		},
@@ -123,16 +168,17 @@
 					return acc
 				},{})
 
-				console.log(statics)
-				console.log(this.getMost(statics.author, 2))
+				// console.log(statics)
+				// console.log(this.getMost(statics.author, 2))
 				this.publisher.pub = this.getMost(statics.publisher, 2)
 				this.publisher.author = this.getMost(statics.author, 2)
 
-				this.category.price = this.classifyNumber(statics.price, [20, 35, 40])
-				this.category.pages = this.classifyNumber(statics.pages, [100, 200, 300, 400])
-				this.category.rating = this.classifyNumber(statics.rating, [5.5, 7.0, 8.5])
+				let sections = this.sections
 
-				console.log(this.classifyNumber(statics.pages, [100, 600, 800]))
+				this.category.price = this.constructObj(sections.price, this.classifyNumber(statics.price, sections.price), '元')
+				this.category.pages = this.constructObj(sections.pages, this.classifyNumber(statics.pages, sections.pages), '页')
+				this.category.rating = this.constructObj(sections.rating, this.classifyNumber(statics.rating.map(item=>item.average), sections.rating))
+				console.log(this.category)
 			},
 			getMost(arr, num){
 				if (!Array.isArray(arr)) {return}
@@ -150,12 +196,12 @@
 				},{})
 				for(let o in obj){
 					sorted.push({
-						key: o,
-						val: obj[o]
+						left: o,
+						right: obj[o]
 					})
 				}
 				sorted.sort((a,b)=>{
-					return b.val - a.val
+					return b.right - a.right
 				})
 				return sorted.splice(0, num)
 			},
@@ -163,9 +209,9 @@
 				if (!Array.isArray(arr) || !Array.isArray(sep)) {return}
 				let len = sep.length;
 				let sorted = new Array(len+1).fill(0)
-				console.log(arr)
-				console.log(sep)
-				console.log(sep[len-1])
+				// console.log(arr)
+				// console.log(sep)
+				// console.log(sep[len-1])
 				arr.forEach((item)=>{
 					if (parseFloat(item) > sep[len-1]) {
 						sorted[len]++
@@ -182,6 +228,39 @@
 				})
 
 				return sorted
+			},
+			constructObj(keyArr, valArr, unit){
+				let uni = unit ? unit : ''
+				if (keyArr.length + 1 !== valArr.length) {return}
+				let obj = {}, arr = []
+				for(let i=0; i<valArr.length; i++){
+					if (i==0) {
+						obj.left = `${keyArr[i]}${uni}以下`
+					}else if(i==valArr.length-1){
+						obj.left = `${keyArr[i-1]}${uni}以上`
+					}else{
+						obj.left = `${keyArr[i-1]}-${keyArr[i]}${uni}`
+					}
+					obj.right = `${valArr[i]}本`
+
+					arr.push(obj)
+					obj = {}
+				}
+				return arr
+			},
+			getCardCnt(index){
+				switch(index){
+					case 0: ;break;
+					case 1: ;break;
+					case 2: 
+						return this.category.rating;
+					case 3: 
+						return this.category.pages;
+					case 4: ;break;
+					case 5: 
+						return this.category.price;
+					default:;
+				}
 			}
 		},
 		components: {

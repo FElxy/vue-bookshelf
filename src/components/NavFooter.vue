@@ -18,8 +18,12 @@
 			display: flex;
 			justify-content: space-around;
 			align-items: center;
+			padding-top: .06rem;
 			border-top: 1px solid #b2b2b2;
 			user-select: none;
+			.iconfont {
+				font-size: .44rem;
+			}
 		}
 	}
 </style>

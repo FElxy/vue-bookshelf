@@ -1,7 +1,7 @@
 <template>
 	<div class="card">
 		<div class="hd">
-			<div class="ico">ico</div>
+			<div class="ico iconfont" v-html="ico"></div>
 			<div class="heading">
 				<h2>{{tt}}</h2>
 				<p>{{desc}}</p>
@@ -11,10 +11,10 @@
 			<slot name="cnt">
 					
 				<ul class="lst">
-					<li><span>8.0</span><span>-----------</span><span>1本</span></li>
-					<li><span>8.0</span><span>-----------</span><span>1本</span></li>
-					<li><span>8.0</span><span>-----------</span><span>1本</span></li>
-					<li><span>8.0</span><span>-----------</span><span>1本</span></li>
+					<li><span>8.0</span><span>1本</span></li>
+					<li><span>8.0</span><span>1本</span></li>
+					<li><span>8.0</span><span>1本</span></li>
+					<li><span>8.0</span><span>1本</span></li>
 				</ul>
 			</slot>
 		</div>
@@ -58,6 +58,8 @@
 			.ico {
 				width: 1rem;
 				height: 1rem;
+				line-height: 1rem;
+				font-size: .8rem;
 			}
 			.heading {
 				display: flex;
@@ -71,12 +73,49 @@
 			}
 		}
 		.bd {
-			.lst {
+			.list-wrap {
 				margin-top: .4rem;
-				li {
-					display: flex;
-					justify-content: space-between;
-					line-height: .64rem;
+				&.lst {
+					text-align: left;
+					dt {
+						display: inline-block;
+						padding: .02rem .1rem;
+						font-size: .1rem;
+						background: #ff7000;
+						color: #fff;
+					}
+					li, dd {
+						display: flex;
+						justify-content: space-between;
+						line-height: .64rem;
+						span {
+							white-space: nowrap;
+						}
+						span:nth-child(2){
+							display: block;
+							position: relative;
+							width: 100%;
+							&:after {
+								content: "";
+								display: inline-block;
+								position: absolute;
+								top: 50%;
+								left: 0;
+								width: 90%;
+								border-top: 1px dashed #333;
+							}
+						}
+					}
+				}
+				&.pill {
+					li {
+						margin: .1rem;
+						padding: .2rem .12rem;
+						border-radius: 5px;
+						display: inline-block;
+						background: #ff7000;
+						color: #fff;
+					}
 				}
 			}
 		}
