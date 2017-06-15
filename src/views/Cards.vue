@@ -24,6 +24,11 @@
 			return {
 				avatar: logo
 			}
+		},
+		methods: {
+			moveCard(){
+				
+			}
 		}
 	}
 </script>
